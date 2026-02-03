@@ -3,7 +3,10 @@ Devin Jay San Nicolas
 dds324@nau.edu
 
 Usage:
-Use as pleased.
+Download entire repository.
+Make
+Run: blur input.ppm output.ppm with appropriate input file
+Make clean
 
 Known Issues:
 None

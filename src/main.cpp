@@ -21,5 +21,11 @@ int main(int argc, char* argv[])
     // write new image to output file
     writeOutputPPMFile(argv[2], filtered_img);
 
+    // free allocated memory
+    free(img->pixels);
+    free(img);
+    free(filtered_img->pixels);
+    free(filtered_img);
+
 	return 0;
 }

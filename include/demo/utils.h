@@ -4,11 +4,12 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <cstdint>
+#include <cstring>
 
 typedef struct {
     int width;
     int height;
-    uint8_t *pixels; // RGB interleaved
+    uint8_t *pixels;
 } PPMImage;
 
 // function declarations
