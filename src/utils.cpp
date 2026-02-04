@@ -150,38 +150,32 @@ PPMImage* applyFilter(PPMImage* img)
                     int neighborX = x + kx;
                     int neighborY = y + ky;
 
-                    // if neighbor is within bounds
-                    if (neighborX >= 0 && neighborX < img->width && neighborY >= 0 && neighborY < img->height)
+                    // if x is below 0, wrap to other side
+                    if (neighborX < 0)
                     {
-                        // apply kernel
-                        weightedSum[0] += img->pixels[3 * (neighborY * img->width + neighborX) + 0] * KERNEL[kx + 2][ky + 2];
-                        weightedSum[1] += img->pixels[3 * (neighborY * img->width + neighborX) + 1] * KERNEL[kx + 2][ky + 2];
-                        weightedSum[2] += img->pixels[3 * (neighborY * img->width + neighborX) + 2] * KERNEL[kx + 2][ky + 2];
+                        neighborX += img->width;
                     }
-                    // otherwise, check if x is in bounds
-                    else if (neighborX >= 0 && neighborX < img->width)  
+                    // otherwise, if x is above width, wrap to other side
+                    else if (neighborX >= img->width)
                     {
-                        // apply kernel with wrapped y
-                        weightedSum[0] += img->pixels[3 * (neighborY * img->width + neighborX - img->width) + 0] * KERNEL[kx + 2][ky + 2];
-                        weightedSum[1] += img->pixels[3 * (neighborY * img->width + neighborX - img->width) + 1] * KERNEL[kx + 2][ky + 2];
-                        weightedSum[2] += img->pixels[3 * (neighborY * img->width + neighborX - img->width) + 2] * KERNEL[kx + 2][ky + 2];
+                        neighborX -= img->width;
                     }
-                    // otherwise, check if y is in bounds
-                    else if (neighborY >= 0 && neighborY < img->height)  
+
+                    // if y is below 0, wrap to other side
+                    if (neighborY < 0)
                     {
-                        // apply kernel with wrapped x
-                        weightedSum[0] += img->pixels[3 * (neighborY - img->width * img->width + neighborX) + 0] * KERNEL[kx + 2][ky + 2];
-                        weightedSum[1] += img->pixels[3 * (neighborY - img->width * img->width + neighborX) + 1] * KERNEL[kx + 2][ky + 2];
-                        weightedSum[2] += img->pixels[3 * (neighborY - img->width * img->width + neighborX) + 2] * KERNEL[kx + 2][ky + 2];
+                        neighborY += img->height;
                     }
-                    // otherwise, assume both are out of bounds
-                    else
+                    // otherwise, if y is above height, wrap to other side
+                    else if (neighborY >= img->height)
                     {
-                        // apply kernel with wrapped x and y
-                        weightedSum[0] += img->pixels[3 * (neighborY - img->width * img->width + neighborX - img->width) + 0] * KERNEL[kx + 2][ky + 2];
-                        weightedSum[1] += img->pixels[3 * (neighborY - img->width * img->width + neighborX - img->width) + 1] * KERNEL[kx + 2][ky + 2];
-                        weightedSum[2] += img->pixels[3 * (neighborY - img->width * img->width + neighborX - img->width) + 2] * KERNEL[kx + 2][ky + 2];
+                        neighborY -= img->height;
                     }
+                    
+                    // apply kernel with wrapped x and y
+                    weightedSum[0] += img->pixels[3 * (neighborY * img->width + neighborX) + 0] * KERNEL[kx + 2][ky + 2];
+                    weightedSum[1] += img->pixels[3 * (neighborY * img->width + neighborX) + 1] * KERNEL[kx + 2][ky + 2];
+                    weightedSum[2] += img->pixels[3 * (neighborY * img->width + neighborX) + 2] * KERNEL[kx + 2][ky + 2];
                 }
             }
 
